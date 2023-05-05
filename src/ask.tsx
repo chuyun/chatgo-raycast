@@ -46,7 +46,7 @@ export default function Ask(props: { conversation?: Conversation; templateId?: n
         style: Toast.Style.Failure,
         title: "Something went wrong",
         message: error.message,
-      }).then()
+      }).then();
     }
   }, [error]);
 
@@ -92,7 +92,7 @@ export default function Ask(props: { conversation?: Conversation; templateId?: n
   const getActionPanel = (question: string, model: TemplateModel) => {
     return (
       <ActionPanel>
-        <PrimaryAction title="Get Answer" onAction={() => chats.ask(question, model || {})}/>
+        <PrimaryAction title="Get Answer" onAction={() => chats.ask(question, model || {})} />
         <FormInputActionSection
           initialQuestion={question}
           onSubmit={(question) => chats.ask(question, model)}
@@ -100,7 +100,7 @@ export default function Ask(props: { conversation?: Conversation; templateId?: n
           selectedTemplateModelId={selectedTemplateModelId}
           onTemplateModelChange={setSelectedTemplateModelId}
         />
-        <PreferencesActionSection/>
+        <PreferencesActionSection />
       </ActionPanel>
     );
   };
@@ -139,7 +139,7 @@ export default function Ask(props: { conversation?: Conversation; templateId?: n
               selectedTemplateModelId={selectedTemplateModelId}
               onTemplateModelChange={setSelectedTemplateModelId}
             />
-            <PreferencesActionSection/>
+            <PreferencesActionSection />
           </ActionPanel>
         ) : (
           getActionPanel(question.data, conversation.model)

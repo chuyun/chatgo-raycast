@@ -1,17 +1,16 @@
 import { Action, ActionPanel, Form, Icon, List, useNavigation } from "@raycast/api";
-import { uniqBy } from 'lodash';
+import { uniqBy } from "lodash";
 import { QuestionFormProps } from "../../type";
 import { useState } from "react";
 
-export const QuestionForm = (
-  {
-    initialQuestion,
-    onSubmit,
-    templateModels,
-    selectedTemplateModelId,
-    onTemplateModelChange,
-    disableChange
-  }: QuestionFormProps & { disableChange?: boolean }) => {
+export const QuestionForm = ({
+  initialQuestion,
+  onSubmit,
+  templateModels,
+  selectedTemplateModelId,
+  onTemplateModelChange,
+  disableChange,
+}: QuestionFormProps & { disableChange?: boolean }) => {
   const { pop } = useNavigation();
   const [question, setQuestion] = useState<string>(initialQuestion ?? "");
   const [error, setError] = useState<{ question: string }>({
@@ -55,10 +54,10 @@ export const QuestionForm = (
         }}
       ></Form.TextArea>
       <Form.Dropdown
-        id='selectedTemplateModelId'
-        title='Template'
+        id="selectedTemplateModelId"
+        title="Template"
         storeValue={false}
-        placeholder='Choose Template'
+        placeholder="Choose Template"
         defaultValue={selectedTemplateModelId.toString()}
         onChange={(id) => {
           onTemplateModelChange(Number(id));
