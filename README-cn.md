@@ -1,5 +1,3 @@
-# ChatGo
-
 ## 概述
 
 基于 ChatGPT API 的 [Raycast](https://raycast.com/) 聊天扩展，可让您方便的与 [ChatGo](http://www.chatgo.pro/) 进行交互。
@@ -28,11 +26,10 @@ here.
 [Discard 群组](https://discord.gg/BQWU9fePM2)
 
 ### 微信
-![微信](https://newscdn.oss-cn-hangzhou.aliyuncs.com/yilu/xr/static/wechat.jpg)
+![微信](https://pic.juncao.cc/raycast/chatgo/wechat.jpg)
 
 ## 使用视频
-
-https://newscdn.oss-cn-hangzhou.aliyuncs.com/yilu/xr/static/outpt.mp4
+https://pic.juncao.cc/raycast/chatgo/outpt.mp4
 
 
 ## Issues
@@ -40,3 +37,5 @@ https://newscdn.oss-cn-hangzhou.aliyuncs.com/yilu/xr/static/outpt.mp4
 
 ## License
 该项目中的代码是根据 [MIT 许可证](LICENSE) 发布的。
+
+---
