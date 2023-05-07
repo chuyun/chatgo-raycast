@@ -24,13 +24,15 @@ here.
 
 
 ## 讨论组
-- [Discard 群组](https://discord.gg/BQWU9fePM2)
-- 微信![微信](https://newscdn.oss-cn-hangzhou.aliyuncs.com/yilu/xr/static/wechat.jpg)
+### Discard
+[Discard 群组](https://discord.gg/BQWU9fePM2)
+
+### 微信
+![微信](https://newscdn.oss-cn-hangzhou.aliyuncs.com/yilu/xr/static/wechat.jpg)
 
 ## 使用视频
-<div>
-<video src="https://newscdn.oss-cn-hangzhou.aliyuncs.com/yilu/xr/static/outpt.mp4"></video>
-</div>
+
+https://newscdn.oss-cn-hangzhou.aliyuncs.com/yilu/xr/static/outpt.mp4
 
 
 ## Issues
