@@ -1,10 +1,5 @@
 # ChatGo
 
-<p align="center">
-   <img src="https://s.newscdn.cn/yilu/smallapp/images/ketong/command-icon.png" height="128">
-   <h1 align="center">ChatGo</h1>
- </p>
-
 ## Overview
 
 A [Raycast](https://raycast.com/) extension that lets you interact with [ChatGo](http://www.chatgo.pro/).

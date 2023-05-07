@@ -26,7 +26,7 @@ here.
 [Discard 群组](https://discord.gg/BQWU9fePM2)
 
 ### 微信
-![微信](https://pic.juncao.cc/raycast/chatgo/wechat.jpg)
+<img src="https://pic.juncao.cc/raycast/chatgo/wechat.jpg" height="128">
 
 ## 使用视频
 https://pic.juncao.cc/raycast/chatgo/outpt.mp4
