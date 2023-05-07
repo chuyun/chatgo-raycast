@@ -31,9 +31,8 @@ here.
 ![微信](https://newscdn.oss-cn-hangzhou.aliyuncs.com/yilu/xr/static/wechat.jpg)
 
 ## 使用视频
-
-https://newscdn.oss-cn-hangzhou.aliyuncs.com/yilu/xr/static/outpt.mp4
-
+Quick Tips and Tricks:
+[![Quick Tips and Tricks for Raycast ChatGo](https://pic.juncao.cc/raycast/chatgo/cover.png)](https://pic.juncao.cc/raycast/chatgo/outpt.mp4)
 
 ## Issues
 有任何意见或建议欢迎提出issue
