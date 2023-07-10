@@ -1,8 +1,9 @@
-import { Toast, clearSearchBar, showToast } from "@raycast/api";
+import { Toast, clearSearchBar, showToast, useNavigation } from "@raycast/api";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { v4 as uuidV5 } from "uuid";
 import { debounce } from 'lodash';
 import { Chat, ChatHook, TemplateModel } from "../type";
+import { Error } from '../views/error';
 import { useChatGo } from "./useChatGo";
 import { chatTransfomer } from "../utils";
 import { useHistory } from "./useHistory";
@@ -18,6 +19,7 @@ export function useChat<T extends Chat>(props: T[]): ChatHook {
 
   const history = useHistory();
   const chatGo = useChatGo();
+  const { push } = useNavigation();
 
   const ask = async (question: string, model: TemplateModel) => {
     await clearSearchBar();
@@ -55,6 +57,14 @@ export function useChat<T extends Chat>(props: T[]): ChatHook {
       },
       model,
       onMessage: (data) => {
+        if(data.code === '300001'){
+          push(<Error
+            title={data.msg}
+            description='Go to the official website (https://www.chatgo.pro) for more information'
+          />);
+          setLoading(false);
+          return;
+        }
         const content = data.choices[0].delta?.content;
         if (content) {
           chat.answer += content;
