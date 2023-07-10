@@ -1,6 +1,7 @@
 import { Toast, clearSearchBar, showToast } from "@raycast/api";
-import { useCallback, useMemo, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { useCallback, useMemo, useRef, useState } from "react";
+import { v4 as uuidV5 } from "uuid";
+import { debounce } from 'lodash';
 import { Chat, ChatHook, TemplateModel } from "../type";
 import { useChatGo } from "./useChatGo";
 import { chatTransfomer } from "../utils";
@@ -10,6 +11,10 @@ export function useChat<T extends Chat>(props: T[]): ChatHook {
   const [data, setData] = useState<Chat[]>(props || []);
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
   const [isLoading, setLoading] = useState<boolean>(false);
+  const timer1 = useRef<number | undefined | NodeJS.Timer>();
+  const timer2 = useRef<number | undefined | NodeJS.Timer>();
+
+  const debouncedSetData = debounce(setData, 10);
 
   const history = useHistory();
   const chatGo = useChatGo();
@@ -24,7 +29,7 @@ export function useChat<T extends Chat>(props: T[]): ChatHook {
     });
 
     const chat: Chat = {
-      id: uuidv4(),
+      id: uuidV5(),
       question,
       answer: "",
       created_at: new Date().toISOString(),
@@ -34,9 +39,9 @@ export function useChat<T extends Chat>(props: T[]): ChatHook {
       return [...prev, chat];
     });
 
-    setTimeout(() => {
+    timer1.current = setTimeout(() => {
       setSelectedChatId(chat.id);
-    }, 50);
+    }, 100);
 
     await chatGo.createChat({
       data: {
@@ -54,16 +59,15 @@ export function useChat<T extends Chat>(props: T[]): ChatHook {
         if (content) {
           chat.answer += content;
         }
-        setTimeout(async () => {
-          setData((prev) => {
-            return prev.map((a) => {
-              if (a.id === chat.id) {
-                return chat;
-              }
-              return a;
-            });
+
+        debouncedSetData((prev) => {
+          return prev.map((a) => {
+            if (a.id === chat.id) {
+              return chat;
+            }
+            return a;
           });
-        }, 5);
+        });
       },
       onClose: () => {
         setLoading(false);
@@ -82,6 +86,8 @@ export function useChat<T extends Chat>(props: T[]): ChatHook {
 
   const clear = useCallback(async () => {
     setData([]);
+    clearTimeout(timer1.current);
+    clearTimeout(timer2.current);
   }, [setData]);
 
   return useMemo(

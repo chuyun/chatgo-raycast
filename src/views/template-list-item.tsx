@@ -2,20 +2,23 @@ import { Action, ActionPanel, Color, Icon, List, showToast, Toast, useNavigation
 import { getAvatarIcon } from "@raycast/utils";
 import React from "react";
 import { useChatGo } from "../hooks/useChatGo";
-import { TemplateBase } from "../type";
+import { TemplateBase, TemplateModel } from "../type";
 import { TemplateForm } from "./template/form";
 
-export const TemplateListItem = ({
-  item,
-  getData,
-  type,
-  prefix = "X",
-}: {
-  item: TemplateBase;
-  getData: () => void;
-  type: 1 | 2 | 3;
-  prefix: string;
-}) => {
+export const TemplateListItem = (
+  {
+    item,
+    getData,
+    type,
+    prefix = "X",
+    myFavoriteTplList = []
+  }: {
+    item: TemplateBase;
+    getData: () => void;
+    type: 1 | 2 | 3;
+    prefix: string;
+    myFavoriteTplList?: TemplateModel[]
+  }) => {
   const chatGo = useChatGo();
   const { push } = useNavigation();
 
@@ -49,7 +52,10 @@ export const TemplateListItem = ({
       case 3:
         return (
           <>
-            {Add2FavoriteAction()}
+            {
+              myFavoriteTplList.every((j) => j.template_id !== item.id) &&
+              Add2FavoriteAction()
+            }
             <Action
               icon={Icon.Repeat}
               title={"Clone to My Template"}
@@ -82,12 +88,15 @@ export const TemplateListItem = ({
       case 2:
         return (
           <>
-            {Add2FavoriteAction()}
+            {
+              myFavoriteTplList.every((j) => j.template_id !== item.id) &&
+              Add2FavoriteAction()
+            }
             <Action
               icon={Icon.Brush}
               title="Edit My Template"
               onAction={() => {
-                push(<TemplateForm initValues={item} callback={getData} />);
+                push(<TemplateForm initValues={item} callback={getData}/>);
               }}
             />
             <Action
@@ -125,9 +134,14 @@ export const TemplateListItem = ({
   return (
     <List.Item
       title={item.name}
+      keywords={[item.name, item.id.toString(), ...item.tags]}
       id={item.id.toString() + item.name + prefix}
       key={item.id + prefix}
       icon={item.avatar || getAvatarIcon(item.name)}
+      accessories={[
+        myFavoriteTplList.some((j) => j.template_id === item.id) ? { icon: Icon.Star } : {},
+        prefix === 'O' || prefix === 'C' ? { text: ' 🔥 ' + `${(item.hot_index > 999) ? '999+' : item.hot_index}` } : {}
+      ]}
       detail={
         <List.Item.Detail
           markdown={`**${item.name}**\n\n\n\n **Description:**\n\n${item.description} \n\n\n **Content:** \n\n${item.content}`}
@@ -138,6 +152,18 @@ export const TemplateListItem = ({
                   <List.Item.Detail.Metadata.TagList.Item text={tag} color={Color.Blue} />
                 ))}
               </List.Item.Detail.Metadata.TagList>
+              {
+                (prefix === 'O' || prefix === 'C') &&
+                <List.Item.Detail.Metadata.Label
+                  title="HotIndex"
+                  text={item.hot_index.toString()}
+                />
+              }
+              <List.Item.Detail.Metadata.Label
+                title="Favorite"
+                icon={myFavoriteTplList.some((j) => j.template_id === item.id)? Icon.Checkmark : Icon.XMarkCircle}
+              />
+              <List.Item.Detail.Metadata.Label title="Public" icon={item.is_pub ? Icon.Checkmark : Icon.XMarkCircle}/>
               <List.Item.Detail.Metadata.Label
                 title="CreateTime"
                 text={new Date(item.create_time ?? 0).toLocaleDateString()}
@@ -146,7 +172,6 @@ export const TemplateListItem = ({
                 title="UpdateTime"
                 text={new Date(item.update_time ?? 0).toLocaleDateString()}
               />
-              <List.Item.Detail.Metadata.Label title="Public" text={item.is_pub ? "YES" : " NO"} />
             </List.Item.Detail.Metadata>
           }
         />

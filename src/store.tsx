@@ -8,6 +8,7 @@ import { TemplateListItem } from "./views/template-list-item";
 
 export default function Store() {
   const [isLoading, setLoading] = useState<boolean>(true);
+  const [keywords, setKeywords] = useState<string | null>(null);
   const [myFavoriteTPlList, setMyFavoriteTPlList] = useState<TemplateModel[]>([]);
   const [officialTplList, setOfficialTplList] = useState<TemplateBase[]>([]);
   const [mineTplList, setMineTplList] = useState<TemplateBase[]>([]);
@@ -43,22 +44,27 @@ export default function Store() {
       .catch();
   }, [setLoading, setMyFavoriteTPlList, setOfficialTplList, setCommunityTplList, setMineTplList]);
 
+  const onSearchTextChange = useCallback((text: string) => {
+    setKeywords(text);
+  }, [setKeywords])
   return (
     <List
       isLoading={isLoading}
       filtering={false}
       throttle={false}
       isShowingDetail={myFavoriteTPlList.length > 0 || officialTplList.length > 0}
-      // searchBarPlaceholder="Search answer/question..."
+      searchBarPlaceholder="Search Template..."
+      onSearchTextChange={onSearchTextChange}
     >
       {myFavoriteTPlList.length === 0 && officialTplList.length === 0 && (
-        <List.EmptyView title="No Data" description="Your recent questions will be showed up here" icon={Icon.Stars} />
+        <List.EmptyView title="No Data" description="Your recent questions will be showed up here" icon={Icon.Stars}/>
       )}
       <List.Section title={"Favorite Templates"} subtitle={uniqBy(myFavoriteTPlList, "id").length.toLocaleString()}>
         {uniqMyFavoriteTplList.map((item, index) => {
           return (
             <List.Item
               title={item.template_name}
+              keywords={[item.template_name, item.id.toString()]}
               id={item.id.toString() + item.template_name + "F"}
               key={item.id}
               icon={item.avatar || getAvatarIcon(item.template_name)}
@@ -69,7 +75,7 @@ export default function Store() {
                     <List.Item.Detail.Metadata>
                       <List.Item.Detail.Metadata.TagList title="Tags">
                         {(item.tags.length ? item.tags : ["UNKNOWN"]).map((tag) => (
-                          <List.Item.Detail.Metadata.TagList.Item text={tag} color={Color.Blue} />
+                          <List.Item.Detail.Metadata.TagList.Item text={tag} color={Color.Blue}/>
                         ))}
                       </List.Item.Detail.Metadata.TagList>
                       <List.Item.Detail.Metadata.Label
@@ -118,25 +124,33 @@ export default function Store() {
         })}
       </List.Section>
       <List.Section title={"My Templates"} subtitle={uniqBy(mineTplList, "id").length.toLocaleString()}>
-        {uniqBy(mineTplList, "id")
-          .filter((i) => uniqMyFavoriteTplList.every((j) => j.template_id !== i.id))
-          .map((item) => {
-            return <TemplateListItem item={item} getData={getData} type={2} prefix={"M"} />;
-          })}
+        {
+          uniqBy(mineTplList, "id")
+            .filter(i => keywords ? (i.name.includes(keywords) || i.id.toString().includes(keywords) || i.tags.includes(keywords)) : i)
+            .map((item) => {
+              return <TemplateListItem item={item} getData={getData} type={2} prefix={"M"}
+                                       myFavoriteTplList={uniqMyFavoriteTplList}/>;
+            })
+        }
       </List.Section>
       <List.Section title={"Official Templates"} subtitle={uniqBy(officialTplList, "id").length.toLocaleString()}>
-        {uniqBy(officialTplList, "id")
-          .filter((i) => uniqMyFavoriteTplList.every((j) => j.template_id !== i.id))
-          .map((item) => {
-            return <TemplateListItem item={item} getData={getData} type={1} prefix="M" />;
-          })}
+        {
+          uniqBy(officialTplList, "id")
+            .filter(i => keywords ? (i.name.includes(keywords) || i.id.toString().includes(keywords) || i.tags.includes(keywords)) : i)
+            .map((item) => {
+              return <TemplateListItem item={item} getData={getData} type={1} prefix="O"
+                                       myFavoriteTplList={uniqMyFavoriteTplList}/>;
+            })
+        }
       </List.Section>
       <List.Section title={"Community Templates"} subtitle={uniqBy(communityTplList, "id").length.toLocaleString()}>
-        {uniqBy(communityTplList, "id")
-          .filter((i) => uniqMyFavoriteTplList.every((j) => j.template_id !== i.id))
-          .map((item) => {
-            return <TemplateListItem item={item} getData={getData} type={3} prefix="C" />;
-          })}
+        {
+          uniqBy(communityTplList, "id")
+            .filter(i => keywords ? (i.name.includes(keywords) || i.id.toString().includes(keywords) || i.tags.includes(keywords)) : i)
+            .map((item) => {
+              return <TemplateListItem item={item} getData={getData} type={3} prefix="C"
+                                       myFavoriteTplList={uniqMyFavoriteTplList}/>;
+            })}
       </List.Section>
     </List>
   );
