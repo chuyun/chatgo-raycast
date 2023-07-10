@@ -8,12 +8,13 @@ export const Error = (props: { title?: string; description?: string; icon?: Imag
   } = props;
   return (
     <List
-      actions={(
+      actions={
         <ActionPanel>
-          <Action.OpenInBrowser title={'Go to website'} url='https://www.chatgo.pro/subscription' />
+          <Action.OpenInBrowser title={"Go to Website"} url="https://www.chatgo.pro/subscription" />
         </ActionPanel>
-      )}
+      }
     >
-      <List.EmptyView title={title} description={description} icon={icon}/>
-    </List>);
+      <List.EmptyView title={title} description={description} icon={icon} />
+    </List>
+  );
 };

@@ -5,20 +5,19 @@ import { useChatGo } from "../hooks/useChatGo";
 import { TemplateBase, TemplateModel } from "../type";
 import { TemplateForm } from "./template/form";
 
-export const TemplateListItem = (
-  {
-    item,
-    getData,
-    type,
-    prefix = "X",
-    myFavoriteTplList = []
-  }: {
-    item: TemplateBase;
-    getData: () => void;
-    type: 1 | 2 | 3;
-    prefix: string;
-    myFavoriteTplList?: TemplateModel[]
-  }) => {
+export const TemplateListItem = ({
+  item,
+  getData,
+  type,
+  prefix = "X",
+  myFavoriteTplList = [],
+}: {
+  item: TemplateBase;
+  getData: () => void;
+  type: 1 | 2 | 3;
+  prefix: string;
+  myFavoriteTplList?: TemplateModel[];
+}) => {
   const chatGo = useChatGo();
   const { push } = useNavigation();
 
@@ -52,10 +51,7 @@ export const TemplateListItem = (
       case 3:
         return (
           <>
-            {
-              myFavoriteTplList.every((j) => j.template_id !== item.id) &&
-              Add2FavoriteAction()
-            }
+            {myFavoriteTplList.every((j) => j.template_id !== item.id) && Add2FavoriteAction()}
             <Action
               icon={Icon.Repeat}
               title={"Clone to My Template"}
@@ -88,15 +84,12 @@ export const TemplateListItem = (
       case 2:
         return (
           <>
-            {
-              myFavoriteTplList.every((j) => j.template_id !== item.id) &&
-              Add2FavoriteAction()
-            }
+            {myFavoriteTplList.every((j) => j.template_id !== item.id) && Add2FavoriteAction()}
             <Action
               icon={Icon.Brush}
               title="Edit My Template"
               onAction={() => {
-                push(<TemplateForm initValues={item} callback={getData}/>);
+                push(<TemplateForm initValues={item} callback={getData} />);
               }}
             />
             <Action
@@ -140,7 +133,7 @@ export const TemplateListItem = (
       icon={item.avatar || getAvatarIcon(item.name)}
       accessories={[
         myFavoriteTplList.some((j) => j.template_id === item.id) ? { icon: Icon.Star } : {},
-        prefix === 'O' || prefix === 'C' ? { text: ' 🔥 ' + `${(item.hot_index > 999) ? '999+' : item.hot_index}` } : {}
+        prefix === "O" || prefix === "C" ? { text: " 🔥 " + `${item.hot_index > 999 ? "999+" : item.hot_index}` } : {},
       ]}
       detail={
         <List.Item.Detail
@@ -152,18 +145,14 @@ export const TemplateListItem = (
                   <List.Item.Detail.Metadata.TagList.Item text={tag} color={Color.Blue} />
                 ))}
               </List.Item.Detail.Metadata.TagList>
-              {
-                (prefix === 'O' || prefix === 'C') &&
-                <List.Item.Detail.Metadata.Label
-                  title="HotIndex"
-                  text={item.hot_index.toString()}
-                />
-              }
+              {(prefix === "O" || prefix === "C") && (
+                <List.Item.Detail.Metadata.Label title="HotIndex" text={item.hot_index.toString()} />
+              )}
               <List.Item.Detail.Metadata.Label
                 title="Favorite"
-                icon={myFavoriteTplList.some((j) => j.template_id === item.id)? Icon.Checkmark : Icon.XMarkCircle}
+                icon={myFavoriteTplList.some((j) => j.template_id === item.id) ? Icon.Checkmark : Icon.XMarkCircle}
               />
-              <List.Item.Detail.Metadata.Label title="Public" icon={item.is_pub ? Icon.Checkmark : Icon.XMarkCircle}/>
+              <List.Item.Detail.Metadata.Label title="Public" icon={item.is_pub ? Icon.Checkmark : Icon.XMarkCircle} />
               <List.Item.Detail.Metadata.Label
                 title="CreateTime"
                 text={new Date(item.create_time ?? 0).toLocaleDateString()}

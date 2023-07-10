@@ -1,9 +1,9 @@
 import { Toast, clearSearchBar, showToast, useNavigation } from "@raycast/api";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { v4 as uuidV5 } from "uuid";
-import { debounce } from 'lodash';
+import { debounce } from "lodash";
 import { Chat, ChatHook, TemplateModel } from "../type";
-import { Error } from '../views/error';
+import { Error } from "../views/error";
 import { useChatGo } from "./useChatGo";
 import { chatTransfomer } from "../utils";
 import { useHistory } from "./useHistory";
@@ -57,11 +57,13 @@ export function useChat<T extends Chat>(props: T[]): ChatHook {
       },
       model,
       onMessage: (data) => {
-        if(data.code === '300001'){
-          push(<Error
-            title={data.msg}
-            description='Go to the official website (https://www.chatgo.pro) for more information'
-          />);
+        if (data.code === "300001") {
+          push(
+            <Error
+              title={data.msg}
+              description="Go to the official website (https://www.chatgo.pro) for more information"
+            />
+          );
           setLoading(false);
           return;
         }

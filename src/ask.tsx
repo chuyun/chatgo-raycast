@@ -18,14 +18,14 @@ interface P {
   conversation?: Conversation;
   templateId?: number;
   arguments?: {
-    initialQuestion?: string,
-    autoQuestion?: '0' | '1',
-    templateId?: string
-  }
+    initialQuestion?: string;
+    autoQuestion?: "0" | "1";
+    templateId?: string;
+  };
 }
 
 export default function Ask(props: P) {
-  const { initialQuestion, autoQuestion = '0', templateId: templateIdFromArgs } = props.arguments ?? {};
+  const { initialQuestion, autoQuestion = "0", templateId: templateIdFromArgs } = props.arguments ?? {};
   const chats = useChat<Chat>(props.conversation ? props.conversation.chats : []);
   const conversations = useConversations();
   const savedChats = useSavedChat();
@@ -48,7 +48,11 @@ export default function Ask(props: P) {
   );
 
   const [selectedTemplateModelId, setSelectedTemplateModelId] = useState<number>(
-    props.conversation ? props.conversation.model.template_id : (props.templateId || templateIdFromArgs) ? (props.templateId || Number(templateIdFromArgs)) : 0
+    props.conversation
+      ? props.conversation.model.template_id
+      : props.templateId || templateIdFromArgs
+      ? props.templateId || Number(templateIdFromArgs)
+      : 0
   );
 
   useEffect(() => {
@@ -64,8 +68,8 @@ export default function Ask(props: P) {
   useEffect(() => {
     return () => {
       chats.clear().catch();
-    }
-  }, [])
+    };
+  }, []);
 
   useEffect(() => {
     if ((props.conversation?.id !== conversation.id || conversations.data.length === 0) && isAutoSaveConversation) {
@@ -79,10 +83,9 @@ export default function Ask(props: P) {
       setSelectedTemplateModelId(props.templateId || Number(templateIdFromArgs));
     }
 
-    if (autoQuestion === '1') {
+    if (autoQuestion === "1") {
       chats.ask(question.data, conversation.model).then();
     }
-
   }, []);
 
   useEffect(() => {
