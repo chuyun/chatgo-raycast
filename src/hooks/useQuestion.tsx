@@ -14,7 +14,7 @@ export function useQuestion(props: { initialQuestion: string; disableAutoLoad?: 
 
   useEffect(() => {
     if (initialQuestion) {
-      return
+      return;
     }
     (async () => {
       if (isAutoLoadText && !disableAutoLoad) {
